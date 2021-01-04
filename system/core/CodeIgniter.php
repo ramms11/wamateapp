@@ -56,7 +56,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 	const CI_VERSION = '3.1.11';
-	const APPS_NAME = 'CINTA';
+	const APPS_NAME = 'wamateapp';
+	const QR_CODE = '';
 	const APPS_VERSI = "1.0";
 	const APPS_DEV = "Helens Developer";
 	const APPS_DEV_LINK = "https://helensdeveloper.com";

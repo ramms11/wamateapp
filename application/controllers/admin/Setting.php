@@ -19,5 +19,10 @@
  	function info()
  	{
  		$this->load->view('admin/appsinfo');
+	 }
+	 
+	 function qrcode()
+ 	{
+ 		$this->load->view('admin/qrcode');
  	}
  } ?>

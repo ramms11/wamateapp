@@ -6,6 +6,7 @@ $route = array(
     '404_override'         	=> '',
     'admin/data=jabatan'    => 'admin/data/jabatan',
     'admin/appsinfo'    => 'admin/setting/info',
+    'admin/qrcode'    => 'admin/setting/qrcode',
     'admin/data=master'    => 'admin/data/master',
     'admin/data/disable_id=(:any)'    => 'admin/data/disable/$1',
     'admin/data/enable_id=(:any)'    => 'admin/data/enable/$1',

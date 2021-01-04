@@ -11,41 +11,40 @@ if ($query->num_rows()>0) {
 	$u_ip = $row['u_ip'];
 	$u_photo = $row['u_photo'];
 }
+
+$apps = 1;
+$query=$this->db->get_where('apps', array('apps_id' => $apps));
+if ($query->num_rows()>0) {
+	$row = $query->row_array();
+	$apps_api = $row['apps_api'];
+	$apps_token = $row['apps_token'];
+	$apps_devicekey = $row['apps_devicekey'];
+	$apps_update = $row['apps_update'];
+}
 $api = file_get_contents('https://cintarest.helenscloud.web.id/apps?apps_id=4957124436');
 foreach (json_decode($api, TRUE) as $key => $value)
-	?>
+?>
 <!DOCTYPE html>
 <html>
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
-	<title><?php echo APPS_NAME ?> - Admin Dashboard </title>
+	<title><?php echo APPS_NAME ?> - QR Code Scanner </title>
 	<link rel="icon" type="image/x-icon" href="<?=base_url('fav-icon.ico')?>"/>
-	<link href="<?=base_url('themes/admin/assets/css/loader.css')?>" rel="stylesheet" type="text/css" />
-	<script src="<?=base_url('themes/admin/assets/js/loader.js')?>"></script>
-	<!-- BEGIN GLOBAL MANDATORY STYLES -->
 	<link href="https://fonts.googleapis.com/css?family=Quicksand:400,500,600,700&display=swap" rel="stylesheet">
 	<link href="<?=base_url('themes/admin/bootstrap/css/bootstrap.min.css')?>" rel="stylesheet" type="text/css" />
 	<link href="<?=base_url('themes/admin/assets/css/plugins.css')?>" rel="stylesheet" type="text/css" />
-	<link href="<?=base_url('themes/admin/plugins/apex/apexcharts.css')?>" rel="stylesheet" type="text/css">
-	<link href="<?=base_url('themes/admin/assets/css/dashboard/dash_2.css')?>" rel="stylesheet" type="text/css" class="dashboard-sales" />
+	<link href="<?=base_url('themes/admin/assets/css/users/user-profile.css')?>" rel="stylesheet" type="text/css" />
 </head>
-<body class="sidebar-noneoverflow dashboard-sales">
-	<div id="load_screen">
-		<div class="loader">
-			<div class="loader-content">
-				<div class="spinner-grow align-self-center"></div>
-			</div>
-		</div>
-	</div>
+<body class="sidebar-noneoverflow">
 	<div class="header-container fixed-top">
 		<header class="header navbar navbar-expand-sm">
 			<ul class="navbar-item flex-row">
 				<li class="nav-item align-self-center page-heading">
 					<div class="page-header">
 						<div class="page-title">
-							<h3>Dashboard Admin</h3>
+							<h3>QR Code Scanner</h3>
 						</div>
 					</div>
 				</li>
@@ -81,8 +80,10 @@ foreach (json_decode($api, TRUE) as $key => $value)
 			</ul>
 		</header>
 	</div>
+
 	<div class="main-container" id="container">
 		<div class="overlay"></div>
+		<div class="cs-overlay"></div>
 		<div class="search-overlay"></div>
 		<div class="sidebar-wrapper sidebar-theme">
 			<nav id="compactSidebar">
@@ -92,8 +93,8 @@ foreach (json_decode($api, TRUE) as $key => $value)
 					</a>
 				</div>
 				<ul class="menu-categories">
-					<li class="menu active">
-						<a href="#dashboard" data-active="true" class="menu-toggle">
+					<li class="menu">
+						<a href="#dashboard" data-active="false" class="menu-toggle">
 							<div class="base-menu">
 								<div class="base-icons">
 									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
@@ -138,14 +139,14 @@ foreach (json_decode($api, TRUE) as $key => $value)
 
 			<div id="compact_submenuSidebar" class="submenu-sidebar">
 				<div class="theme-brand-name">
-					<a href="index.html"><?php echo APPS_NAME ?></a>
+					<a href="<?=base_url('admin/dashboard')?>"><?php echo APPS_NAME ?></a>
 				</div>
 				<div class="submenu" id="dashboard">
 					<div class="category-info">
 						<h5>Dashboard</h5>
 					</div>
 					<ul class="submenu-list" data-parent-element="#dashboard"> 
-						<li class="active">
+						<li>
 							<a href="<?=base_url('admin/dashboard')?>"> <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-circle"><circle cx="12" cy="12" r="10"></circle></svg></span> Panel Admin</a>
 						</li>
 						<li>
@@ -157,12 +158,9 @@ foreach (json_decode($api, TRUE) as $key => $value)
 					<div class="category-info">
 						<h5>Apps</h5>
 					</div>
-					<ul class="submenu-list" data-parent-element="#app">
+					<ul class="submenu-list" data-parent-element="#app"> 
 						<li>
 							<a href="<?=base_url('admin/device')?>"> <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-circle"><circle cx="12" cy="12" r="10"></circle></svg></span> Device</a>
-						</li>
-						<li>
-							<a href="<?=base_url('admin/qrcode')?>"> <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-circle"><circle cx="12" cy="12" r="10"></circle></svg></span> QrCode</a>
 						</li>
 					</ul>
 				</div>
@@ -176,9 +174,6 @@ foreach (json_decode($api, TRUE) as $key => $value)
 						</li>
 						<li>
 							<a href="<?=base_url('admin/data=jabatan')?>"><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-circle"><circle cx="12" cy="12" r="10"></circle></svg></span> Jabatan</a>
-						</li>
-						<li>
-							<a href="<?=base_url('admin/data=add')?>"><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-circle"><circle cx="12" cy="12" r="10"></circle></svg></span> Make CS Users</a>
 						</li>
 					</ul>
 				</div>
@@ -196,101 +191,139 @@ foreach (json_decode($api, TRUE) as $key => $value)
 		</div>
 		<div id="content" class="main-content">
 			<div class="layout-px-spacing">
-				<div class="row layout-top-spacing">
-					<div class="col-xl-5 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
-						<div class="widget widget-account-invoice-one">
-							<div class="widget-heading">
-								<h5 class="">Website Info</h5>
-							</div>
-							<div class="widget-content">
-								<div class="invoice-box">
-									<div class="acc-total-info">
-										<h5>Nama Perusahaan</h5>
-										<p class="acc-amount"><?=$apps_corp?></p>
-									</div>
-
-									<div class="inv-detail">                                    
-										<div class="info-detail-1">
-											<p>Company email</p>
-											<p><?=$apps_email?></p>
-										</div>
-										<div class="info-detail-2">
-											<p>APPS Name</p>
-											<p><?php echo APPS_NAME ?></p>
-										</div>
-										<div class="info-detail-2">
-											<p>APPS Version</p>
-											<p><?php echo APPS_VERSI ?></p>
-										</div>
-									</div>
-									<div class="inv-detail">
-										<div class="acc-total-info">
-											<h5>Apps Detail</h5>
-										</div>
-										<div class="info-detail-2">
-											<p>APPS Code</p>
-											<p><?php echo $value['apps_id'] ?></p>
-										</div>
-										<div class="info-detail-2">
-											<p>APPS Version</p>
-											<p><?php echo $value['apps_version'] ?></p>
-										</div>
-									</div>
-
-									<div class="inv-action">
-										<a href="" class="btn btn-outline-dark">Summary</a>
-										<?php if (APPS_VERSI < $value['apps_version']): ?>
-											
-											<a href="" class="btn btn-success">Update</a>
-										<?php endif ?>
-									</div>
+				<div class="row layout-spacing">
+					<div class="col-xl-4 col-lg-6 col-md-5 col-sm-12 layout-top-spacing">
+						<div class="user-profile layout-spacing">
+							<div class="widget-content widget-content-area">
+								<div class="d-flex justify-content-between">
+									<h3 class="">QR Code Scanner</h3>
+									<a class="mt-2 edit-profile"></a>
+								</div>
+								<div class="text-center user-info">
+									<img src="<?=base_url().'qrscan.png'?>" width="50%" alt="avatar">
+									<p class=""><?php echo APPS_NAME ?></p>
+								</div>
+								<div class="user-info-list">
+									<div class="">
+										<ul class="contacts-block list-unstyled">
+											<li class="contacts-block__item">
+												<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-monitor"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg> Version <b style="color: red"><?php echo APPS_VERSI ?></b>
+											</li>
+											<li class="contacts-block__item">
+												<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-info"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg> APPS CODE <b style="color: red"><?php echo $value['apps_id'] ?></b>
+											</li>
+										</ul>
+									</div>                                    
 								</div>
 							</div>
-
 						</div>
 					</div>
-					<div class="col-xl-7 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
-						<div class="widget widget-table-two">
-							<div class="widget-heading">
-								<h5 class="">Recent Users</h5>
-							</div>
-							<div class="widget-content">
-								<div class="table-responsive">
-									<table class="table">
-										<thead>
-											<tr>
-												<th><div class="th-content">Customer</div></th>
-												<th><div class="th-content">Username</div></th>
-												<th><div class="th-content">Status</div></th>
-											</tr>
-										</thead>
-										<tbody>
-											<?php foreach($DataUsers->result() as $du): ?>
-												<tr>
-													<?php 
-                                                    $query=$this->db->get_where('karyawan', array('k_id' => $du->u_kid));
-                                                    if ($query->num_rows()>0) {
-                                                        $row = $query->row_array();
-                                                        $nama = $row['k_nama'];
-                                                    }
-                                                    ?>
-													<td><div class="td-content customer-name"><img src="<?=base_url().'themes/img/'.$du->u_photo?>" alt="avatar"><?=$nama?></div></td>
-													<td><div class="td-content product-brand"><?=$du->u_name?></div></td>
-													<?php if ($du->u_stat != 1): ?>
-														<td><div class="td-content"><span class="badge outline-badge-danger">Deactive</span></div></td>
-														<?php else: ?>
-															<td><div class="td-content"><span class="badge outline-badge-success">Active</span></div></td>
-													<?php endif ?>
-												</tr>
-											<?php endforeach;?>
-										</tbody>
-									</table>
+					<div class="col-xl-8 col-lg-6 col-md-7 col-sm-12 layout-top-spacing">
+						<div class="bio layout-spacing ">
+							<div class="widget-content widget-content-area">
+								<h3 class="">Bio</h3>
+								<div class="bio-skill-box">
+									<div class="row">
+										<div class="col-12 col-xl-6 col-lg-12 mb-xl-5 mb-5 ">
+											<div class="d-flex b-skills">
+												<div>
+												</div>
+												<div class="">
+													<h5>Apps API</h5>
+													<p>
+														<?php
+														echo crypt($apps_api);
+														?>
+													</p>
+													<span style="color: red"> Server Link Di-Enkripsi</span>
+												</div>
+											</div>
+										</div>
+										<div class="col-12 col-xl-6 col-lg-12 mb-xl-5 mb-5 ">
+											<div class="d-flex b-skills">
+												<div>
+												</div>
+												<div class="">
+													<h5>Token Key</h5>
+													<p>
+														<?php
+														echo crypt($apps_token);
+														?>
+													</p>
+													<span style="color: red"> Token Anda Di-Enkripsi</span>
+												</div>
+											</div>
+										</div>
+										<div class="col-12 col-xl-6 col-lg-12 mb-xl-0 mb-5 ">
+											<div class="d-flex b-skills">
+												<div>
+												</div>
+												<div class="">
+													<h5>Device Key</h5>
+													<p>
+														<?php
+														echo crypt($apps_devicekey);
+														?>
+													</p>
+													<span style="color: red"> Token Anda Di-Enkripsi</span>
+												</div>
+											</div>
+										</div>
+										<div class="col-12 col-xl-6 col-lg-12 mb-xl-0 mb-0 ">
+											<div class="d-flex b-skills">
+												<div>
+												</div>
+												<div class="">
+													<h5>Last Update</h5>
+													<p>
+														<?php
+														$hari = date ("D");
+														switch($hari){
+															case 'Sun':
+															$hari_ini = "Minggu";
+															break;
+
+															case 'Mon':			
+															$hari_ini = "Senin";
+															break;
+
+															case 'Tue':
+															$hari_ini = "Selasa";
+															break;
+
+															case 'Wed':
+															$hari_ini = "Rabu";
+															break;
+
+															case 'Thu':
+															$hari_ini = "Kamis";
+															break;
+
+															case 'Fri':
+															$hari_ini = "Jumat";
+															break;
+
+															case 'Sat':
+															$hari_ini = "Sabtu";
+															break;
+
+															default:
+															$hari_ini = "Tidak di ketahui";		
+															break;
+														} ?>
+														<?php echo $hari_ini; ?>
+														<?=date('d M Y - H:i:s',strtotime($apps_update))?>
+													</p>
+													<span style="color: red"> Update Terakhir</span>
+												</div>
+											</div>
+										</div>
+									</div>
 								</div>
-							</div>
+							</div>                                
 						</div>
 					</div>
 				</div>
-
 			</div>
 			<?php $this->load->view('admin/footer') ?>
 		</div>
@@ -300,6 +333,7 @@ foreach (json_decode($api, TRUE) as $key => $value)
 	<script src="<?=base_url('themes/admin/bootstrap/js/bootstrap.min.js')?>"></script>
 	<script src="<?=base_url('themes/admin/plugins/perfect-scrollbar/perfect-scrollbar.min.js')?>"></script>
 	<script src="<?=base_url('themes/admin/assets/js/app.js')?>"></script>
+
 	<script>
 		$(document).ready(function() {
 			App.init();
@@ -307,9 +341,5 @@ foreach (json_decode($api, TRUE) as $key => $value)
 	</script>
 	<script src="<?=base_url('themes/admin/assets/js/custom.js')?>"></script>
 	<!-- END GLOBAL MANDATORY SCRIPTS -->
-
-	<!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
-	<script src="<?=base_url('themes/admin/plugins/apex/apexcharts.min.js')?>"></script>
-	<script src="<?=base_url('themes/admin/assets/js/dashboard/dash_2.js')?>"></script>    <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
 </body>
 </html>
